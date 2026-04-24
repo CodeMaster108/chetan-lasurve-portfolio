@@ -66,3 +66,38 @@ body {
   padding: 100px;
   text-align: center;
 }
+/* HORIZONTAL SCROLL */
+.horizontal-section {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.horizontal-container {
+  display: flex;
+  height: 100%;
+  width: 300%; /* 3 panels */
+}
+
+.h-panel {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.h-panel img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(60%);
+  transform: scale(1.2);
+}
+
+.h-panel h2 {
+  position: relative;
+  font-size: 50px;
+  z-index: 2;
+}
