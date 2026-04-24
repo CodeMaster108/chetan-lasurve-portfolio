@@ -3,38 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <title>Chetan Lasurve</title>
+
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- HERO WITH VIDEO -->
+<!-- HERO -->
 <section class="hero">
-  <video autoplay muted loop playsinline class="bg-video">
-    <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4">
-  </video>
-  <div class="hero-content">
-    <h1>Chetan Lasurve</h1>
-    <p>PMO Manager</p>
-    <span>Driving Governance. Enabling Scale. Delivering Impact.</span>
-  </div>
+  <h1 class="hero-title">Chetan Lasurve</h1>
+  <p class="hero-sub">PMO Manager</p>
 </section>
 
-<!-- STICKY SCROLL SECTION -->
-<section class="sticky-section">
-  <div class="sticky-container">
-    <div class="text-block" id="text1">Driving Governance Excellence</div>
-    <div class="text-block" id="text2">Scaling Workforce Strategy</div>
-    <div class="text-block" id="text3">Delivering Measurable Impact</div>
-  </div>
+<!-- SCROLL STORY -->
+<section class="scroll-section">
+  <div class="panel panel1">Driving Governance Excellence</div>
+  <div class="panel panel2">Scaling Workforce Strategy</div>
+  <div class="panel panel3">Delivering Measurable Impact</div>
 </section>
 
-<!-- GLASSMORPHISM IMPACT -->
-<section class="glass-section">
+<!-- IMPACT -->
+<section class="impact">
   <h2>Impact</h2>
-  <div class="glass-grid">
-    <div class="glass-card"><h3>34+</h3><p>Projects Optimized</p></div>
-    <div class="glass-card"><h3>Global</h3><p>Program Governance</p></div>
-    <div class="glass-card"><h3>Zero</h3><p>Manual Errors</p></div>
+  <div class="cards">
+    <div class="card">34+ Projects</div>
+    <div class="card">Global Programs</div>
+    <div class="card">Zero Errors</div>
   </div>
 </section>
 
@@ -47,5 +44,6 @@
 </section>
 
 <script src="script.js"></script>
+
 </body>
 </html>
