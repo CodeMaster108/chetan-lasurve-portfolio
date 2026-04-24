@@ -1,1 +1,954 @@
+<!DOCTYPE html>
+<!-- 
+  DOCTYPE tells the browser: "this is a modern HTML5 document".
+  Always include this as the very first line of every HTML file.
+-->
 
+<html lang="en">
+<!-- 
+  <html> is the root (outermost) tag that wraps EVERYTHING.
+  lang="en" tells browsers and screen readers this page is in English.
+-->
+
+<head>
+  <!-- 
+    <head> holds invisible settings for the page.
+    Nothing inside <head> appears on screen — it's metadata & resources.
+  -->
+
+  <meta charset="UTF-8">
+  <!-- 
+    Tells the browser to use UTF-8 character encoding.
+    This lets you safely use symbols, arrows (→), em dashes (—), etc.
+  -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 
+    Makes the page RESPONSIVE — it will scale correctly on phones and tablets.
+    Without this, mobile browsers zoom out and show a tiny version of a desktop site.
+  -->
+
+  <title>Chetan Lasurve — PMO Manager</title>
+  <!-- 
+    The text shown in the browser tab and in Google search results.
+    Keep it concise and professional.
+  -->
+
+  <!-- ============================================================
+       GOOGLE FONTS — Loading two beautiful typefaces from the web
+       - "Cormorant Garamond": elegant serif for headings (editorial feel)
+       - "DM Sans": modern, clean sans-serif for body text
+       No installation needed; the browser downloads them automatically.
+  ============================================================ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       CSS (Cascading Style Sheets) controls how things LOOK.
+       Everything inside <style> ... </style> is CSS, not HTML.
+       CSS rules look like:  selector { property: value; }
+    ============================================================ */
+
+    /* ---------- DESIGN TOKENS (Global Variables) ----------
+       CSS variables (--name: value) let you define colours/sizes ONCE
+       and reuse them everywhere. If you change one here, it updates
+       throughout the whole page automatically.
+    --------------------------------------------------------- */
+    :root {
+      --bg:        #0e0e0e;   /* Main background — near-black */
+      --surface:   #161616;   /* Slightly lighter card/section backgrounds */
+      --border:    #2a2a2a;   /* Subtle divider lines */
+      --gold:      #c9a96e;   /* The signature warm gold accent colour */
+      --gold-dim:  #7a6342;   /* Muted version of gold for subtle elements */
+      --text:      #e8e0d5;   /* Main text — warm off-white, easier on eyes than pure white */
+      --muted:     #8a8278;   /* Secondary/supporting text */
+      --font-head: 'Cormorant Garamond', Georgia, serif;   /* Serif for headings */
+      --font-body: 'DM Sans', system-ui, sans-serif;       /* Sans for body */
+    }
+
+    /* ---------- RESET & BASE STYLES ----------
+       Browsers add their own default padding/margin.
+       This reset wipes those out so YOU control everything.
+    ------------------------------------------- */
+    *, *::before, *::after {
+      box-sizing: border-box;  /* padding is included inside element width, not added on top */
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth; /* Clicking nav links glides smoothly instead of jumping */
+    }
+
+    body {
+      /* 
+        The <body> is the visible area of the page.
+        Everything displayed on screen lives inside <body>.
+      */
+      background-color: var(--bg);   /* Use the dark background variable */
+      color: var(--text);            /* Default text colour for the whole page */
+      font-family: var(--font-body); /* Default typeface */
+      font-weight: 300;              /* Light weight for an elegant feel */
+      line-height: 1.7;              /* Space between lines of text — 1.7 = 170% of font size */
+      font-size: 16px;               /* Base size; all 'rem' units are multiples of this */
+      -webkit-font-smoothing: antialiased; /* Makes text look crisper on Mac/iOS */
+    }
+
+    /* ============================================================
+       NAVIGATION BAR — Fixed at the top, always visible while scrolling
+    ============================================================ */
+    nav {
+      position: fixed;        /* Sticks to the viewport, doesn't scroll away */
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;           /* Sits on top of all other content */
+      display: flex;          /* Flexbox = powerful layout tool (children line up in a row/column) */
+      justify-content: space-between; /* Push name to left, links to right */
+      align-items: center;    /* Vertically centre the children */
+      padding: 1.25rem 4rem;  /* 1.25rem top/bottom, 4rem left/right */
+      border-bottom: 1px solid var(--border);
+      background: rgba(14, 14, 14, 0.92); /* Semi-transparent dark background */
+      backdrop-filter: blur(12px);        /* Frosted-glass blur of the content behind nav */
+    }
+
+    .nav-name {
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;  /* Slight spacing between letters — feels refined */
+      color: var(--gold);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;         /* gap adds space between flex children */
+      list-style: none;  /* Remove bullet points from the <ul> */
+    }
+
+    .nav-links a {
+      /* <a> is a hyperlink — clicking it jumps to a section */
+      text-decoration: none;         /* Remove the default underline */
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;     /* ALL CAPS automatically */
+      transition: color 0.25s ease;  /* Smooth colour change on hover (takes 0.25 seconds) */
+    }
+
+    .nav-links a:hover {
+      /* :hover = styles that apply when the mouse is over the element */
+      color: var(--gold);
+    }
+
+    /* ============================================================
+       HERO SECTION — The first big screen-filling introduction
+    ============================================================ */
+    .hero {
+      min-height: 100vh;          /* At least 100% of the viewport height */
+      display: flex;
+      flex-direction: column;     /* Stack children top-to-bottom instead of side-by-side */
+      justify-content: center;
+      padding: 6rem 4rem 4rem;   /* top right/left bottom (shorthand) */
+      position: relative;
+      overflow: hidden;           /* Hide anything that spills outside this box */
+    }
+
+    /* Decorative vertical line — a purely visual flourish */
+    .hero::before {
+      /* ::before creates a fake element BEFORE the hero's content */
+      content: '';                /* Required for pseudo-elements to appear */
+      position: absolute;
+      left: 4rem;
+      top: 50%;
+      transform: translateY(-50%); /* Move up by 50% of its own height to truly center it */
+      width: 1px;
+      height: 40%;
+      background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+      /* linear-gradient = colour fade; here: fade in gold, then fade out */
+    }
+
+    .hero-inner {
+      max-width: 900px;     /* Cap the content width so it doesn't stretch too wide */
+      padding-left: 3rem;   /* Push it right of the decorative line */
+    }
+
+    .hero-label {
+      /* Small uppercase label above the name — sets context immediately */
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      opacity: 0;                               /* Start invisible */
+      animation: fadeUp 0.8s ease 0.2s forwards; /* Animate into view */
+    }
+
+    .hero-name {
+      font-family: var(--font-head);
+      font-size: clamp(3.5rem, 8vw, 7rem); 
+      /* 
+        clamp(min, preferred, max)
+        On small screens: 3.5rem. On wide screens: up to 7rem. 
+        vw = viewport width — 8vw = 8% of screen width.
+      */
+      font-weight: 300;
+      line-height: 1.0;
+      color: var(--text);
+      margin-bottom: 0.2em;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.4s forwards;
+    }
+
+    .hero-name em {
+      /* <em> = emphasis/italic. Here used to style "Lasurve" differently */
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-title {
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.6s forwards;
+    }
+
+    .hero-summary {
+      max-width: 560px;
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.8s forwards;
+    }
+
+    .hero-summary strong {
+      color: var(--text); /* Make bolded words in the summary brighter */
+      font-weight: 500;
+    }
+
+    /* Contact strip below the summary */
+    .hero-contact {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2.5rem;
+      flex-wrap: wrap; /* On small screens, items wrap to the next line */
+      opacity: 0;
+      animation: fadeUp 0.8s ease 1s forwards;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .contact-dot {
+      /* Small decorative gold dot before each contact detail */
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;  /* Makes it a circle */
+      background: var(--gold);
+      flex-shrink: 0;      /* Don't let flexbox squish this dot */
+    }
+
+    /* ============================================================
+       MAIN CONTENT AREA — All sections after the hero
+    ============================================================ */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;       /* Centre the block horizontally */
+      padding: 0 4rem 6rem;
+    }
+
+    /* ---------- SECTION WRAPPER ----------
+       Reusable class applied to every section (Experience, Skills, etc.)
+    --------------------------------------- */
+    .section {
+      padding: 5rem 0;
+      border-top: 1px solid var(--border); /* Thin horizontal divider between sections */
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;  /* Align the number and heading text at their text baselines */
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .section-number {
+      /* Small italic numbers like "01" beside each section title */
+      font-family: var(--font-head);
+      font-size: 0.9rem;
+      font-style: italic;
+      color: var(--gold-dim);
+    }
+
+    .section-title {
+      font-family: var(--font-head);
+      font-size: 2rem;
+      font-weight: 300;
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================================
+       EXPERIENCE CARDS — Each job role
+    ============================================================ */
+    .experience-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px; /* Tiny gap between cards */
+    }
+
+    .exp-card {
+      background: var(--surface);         /* Slightly lighter than page background */
+      border: 1px solid var(--border);
+      border-left: 2px solid transparent; /* Invisible left border by default */
+      padding: 2rem 2.5rem;
+      transition: border-color 0.3s ease, transform 0.3s ease;
+      cursor: default;
+    }
+
+    .exp-card:hover {
+      border-left-color: var(--gold);      /* Gold left accent line appears on hover */
+      transform: translateX(4px);          /* Subtle rightward nudge — feels interactive */
+    }
+
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;  /* Align to the top of each child */
+      margin-bottom: 0.75rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .exp-role {
+      font-family: var(--font-head);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .exp-period {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      text-transform: uppercase;
+      white-space: nowrap; /* Keep the date on one line */
+      padding-top: 0.15rem;
+    }
+
+    .exp-company {
+      font-size: 0.85rem;
+      color: var(--gold-dim);
+      margin-bottom: 1.2rem;
+      font-style: italic;
+    }
+
+    .exp-bullets {
+      list-style: none; /* Remove default bullet points — we'll make custom ones */
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .exp-bullets li {
+      font-size: 0.9rem;
+      color: var(--muted);
+      padding-left: 1.2rem;   /* Create indent space for the custom bullet */
+      position: relative;     /* Needed so the ::before pseudo-element positions relative to this */
+    }
+
+    .exp-bullets li::before {
+      /* Custom gold dash bullet point */
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--gold-dim);
+      font-size: 0.8rem;
+    }
+
+    /* ============================================================
+       SKILLS GRID — Tools and functional areas
+    ============================================================ */
+    .skills-grid {
+      display: grid;
+      /* 
+        grid-template-columns: auto-fill means "fit as many columns as possible"
+        minmax(200px, 1fr) means "each column is at least 200px, but can grow equally"
+        This makes it automatically responsive!
+      */
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1px; /* 1px gap creates a grid-line effect with the background colour showing through */
+      background: var(--border); /* The gaps "reveal" this background — clever trick for grid lines */
+    }
+
+    .skill-item {
+      background: var(--surface);
+      padding: 1.2rem 1.5rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .skill-item:hover {
+      color: var(--gold);
+      background: var(--bg);
+    }
+
+    /* ============================================================
+       ACCOMPLISHMENTS — Key career highlights
+    ============================================================ */
+    .accomplishments-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .acc-card {
+      border: 1px solid var(--border);
+      padding: 1.75rem;
+      position: relative;
+      overflow: hidden;    /* Clip the decorative corner element */
+    }
+
+    .acc-card::after {
+      /* Decorative gold corner accent */
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 30px;
+      height: 30px;
+      border-bottom: 1px solid var(--gold-dim);
+      border-right: 1px solid var(--gold-dim);
+    }
+
+    .acc-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ============================================================
+       CERTIFICATIONS — Clean list layout
+    ============================================================ */
+    .cert-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .cert-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.25rem;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s;
+    }
+
+    .cert-item:hover {
+      border-color: var(--gold-dim);
+    }
+
+    .cert-icon {
+      /* Small gold square icon placeholder */
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--gold-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: var(--gold);
+      flex-shrink: 0;
+      font-family: var(--font-head);
+      font-style: italic;
+    }
+
+    .cert-name {
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .cert-date {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-name {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    .footer-info {
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ============================================================
+       KEYFRAME ANIMATIONS
+       @keyframes defines a named animation sequence.
+       You apply it with: animation: name duration timing delay fill-mode;
+       "forwards" = keep the final state after animation ends.
+    ============================================================ */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px); /* Start 20px below final position */
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);    /* End at normal position */
+      }
+    }
+
+    /* ============================================================
+       RESPONSIVE — Adjust layout for smaller screens
+       @media queries apply styles ONLY when a condition is met.
+       Here: when the screen width is 768px or less (tablets/phones).
+    ============================================================ */
+    @media (max-width: 768px) {
+      nav {
+        padding: 1rem 1.5rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .hero {
+        padding: 5rem 1.5rem 3rem;
+        min-height: auto;
+        padding-bottom: 4rem;
+      }
+
+      .hero::before {
+        display: none; /* Hide the vertical decorative line on mobile */
+      }
+
+      .hero-inner {
+        padding-left: 0;
+      }
+
+      main {
+        padding: 0 1.5rem 4rem;
+      }
+
+      footer {
+        padding: 1.5rem;
+      }
+
+      .exp-header {
+        flex-direction: column; /* Stack role & date vertically on small screens */
+        gap: 0.25rem;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <!--
+    <body> contains everything VISIBLE on the page.
+    HTML tags are like labelled boxes:
+      - <nav> = navigation bar
+      - <section> = a thematic block of content
+      - <h1>-<h6> = headings (h1 biggest, h6 smallest)
+      - <p> = paragraph
+      - <ul>/<li> = unordered list / list item
+      - <span> = inline wrapper (for styling a word or phrase)
+      - <div> = generic block container
+    Tags can be nested inside each other.
+  -->
+
+  <!-- ============================================================
+       NAVIGATION BAR
+  ============================================================ -->
+  <nav>
+    <span class="nav-name">Chetan Lasurve</span>
+    <!-- class="nav-name" links this element to the .nav-name CSS rule above -->
+
+    <ul class="nav-links">
+      <!-- 
+        <ul> = unordered list (no numbers, just items).
+        Each <li> (list item) holds a navigation link.
+        href="#experience" links to the element with id="experience" — smooth scroll.
+      -->
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#accomplishments">Highlights</a></li>
+      <li><a href="#certifications">Certifications</a></li>
+    </ul>
+  </nav>
+
+
+  <!-- ============================================================
+       HERO SECTION — The first impression
+  ============================================================ -->
+  <section class="hero">
+    <!-- 
+      <section> groups related content with semantic meaning.
+      class="hero" applies all the .hero CSS styles.
+    -->
+
+    <div class="hero-inner">
+      <!-- <div> is a generic container with no semantic meaning — used for grouping and styling -->
+
+      <p class="hero-label">PMO Manager · Mumbai, India</p>
+      <!-- <p> is a paragraph element. Here used for a short label. -->
+
+      <h1 class="hero-name">
+        <!-- 
+          <h1> is the most important heading on the page — use only one per page.
+          It's bold and large by default; we override that with CSS.
+        -->
+        Chetan <em>Lasurve</em>
+        <!-- <em> makes text italic and slightly emphasised -->
+      </h1>
+
+      <p class="hero-title">Program & Project Management · PMO · Governance</p>
+
+      <p class="hero-summary">
+        PMO professional with <strong>12+ years</strong> driving governance programs, 
+        workforce management, and strategic initiatives across global financial 
+        institutions. Expert in <strong>executive reporting, budget governance</strong>, 
+        and building PMO frameworks that deliver measurable business value.
+      </p>
+      <!-- <strong> bolds text and signals importance to search engines and screen readers -->
+
+      <div class="hero-contact">
+        <div class="contact-item">
+          <span class="contact-dot"></span>
+          <!-- <span> is an inline container — no line break before/after it -->
+          <span>Mumbai, India</span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-dot"></span>
+          <span>+91 89762 26875</span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-dot"></span>
+          <span>clasurve@gmail.com</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       MAIN CONTENT — All sections below the hero
+  ============================================================ -->
+  <main>
+    <!-- <main> marks the primary content area of the page (good for accessibility & SEO) -->
+
+
+    <!-- ── EXPERIENCE SECTION ─────────────────────────────────── -->
+    <section class="section" id="experience">
+      <!-- 
+        id="experience" is a unique identifier.
+        The nav link href="#experience" jumps here when clicked.
+      -->
+
+      <div class="section-header">
+        <span class="section-number">01</span>
+        <h2 class="section-title">Professional Experience</h2>
+        <!-- <h2> is a second-level heading — used for section titles -->
+      </div>
+
+      <div class="experience-list">
+
+        <!-- ── Job 1: Omnicom ── -->
+        <div class="exp-card">
+          <div class="exp-header">
+            <h3 class="exp-role">PMO Manager — Governance & Specialized Services</h3>
+            <!-- <h3> = third-level heading, used for individual job titles within a section -->
+            <span class="exp-period">Oct 2023 – Aug 2025</span>
+          </div>
+          <p class="exp-company">Omnicom Media Group</p>
+          <ul class="exp-bullets">
+            <!-- 
+              <ul> = unordered list. Each <li> is one bullet point.
+              We removed the default browser bullets with CSS and added our own gold dashes.
+            -->
+            <li>Led global implementation of governance regulations across DAS & OAG Group, ensuring Change Control Board compliance.</li>
+            <li>Managed client billing, cost governance reviews, and SOW facilitation across delivery functions.</li>
+            <li>Prepared executive dashboards and MBR/QBR decks for COO-level steering forums.</li>
+            <li>Drove reporting automation, budget tracking, and resource forecasting across multi-country engagements.</li>
+            <li>Managed NFR signoffs, action items, and change requests within governance frameworks.</li>
+          </ul>
+        </div>
+
+        <!-- ── Job 2: UBS ── -->
+        <div class="exp-card">
+          <div class="exp-header">
+            <h3 class="exp-role">PMO Officer</h3>
+            <span class="exp-period">Nov 2018 – Sep 2023</span>
+          </div>
+          <p class="exp-company">UBS — Group Technology, Market Regulations</p>
+          <ul class="exp-bullets">
+            <li>Provided end-to-end PMO support for Market Regulations across Group Technology — governance, compliance, and systems integration.</li>
+            <li>Published data analysis dashboards tracking program status, budget health, and compliance updates.</li>
+            <li>Led cost estimation, budget forecasts, and financial health reports for IB Ops & Tech portfolios.</li>
+            <li>Built SharePoint repositories enhancing regulatory audit readiness and knowledge management.</li>
+            <li>Cross-functional governance across cybersecurity, engineering, compliance, and product teams.</li>
+          </ul>
+        </div>
+
+        <!-- ── Job 3: Morgan Stanley ── -->
+        <div class="exp-card">
+          <div class="exp-header">
+            <h3 class="exp-role">PMO Lead</h3>
+            <span class="exp-period">Aug 2016 – Nov 2018</span>
+          </div>
+          <p class="exp-company">Teamware Solutions — Deployed at Morgan Stanley</p>
+          <ul class="exp-bullets">
+            <li>Executed annual budgeting and forecasting, implementing allocations via Staffing Planner & People Tracker PPM tools.</li>
+            <li>Published reports with project status, timelines, RAID items for senior stakeholders.</li>
+            <li>Supported change management and workforce strategy, including weekly savings and end-state reporting.</li>
+            <li>Managed workspace planning and restacking exercises for strategic co-location of teams.</li>
+          </ul>
+        </div>
+
+        <!-- ── Job 4: Barclays ── -->
+        <div class="exp-card">
+          <div class="exp-header">
+            <h3 class="exp-role">PMO Lead & Transitions</h3>
+            <span class="exp-period">Jun 2015 – Jul 2016</span>
+          </div>
+          <p class="exp-company">HCL Technologies — Deployed at Barclays</p>
+          <ul class="exp-bullets">
+            <li>Managed end-to-end transition support for global location strategy projects via Transition Control Framework.</li>
+            <li>Performed BCM risk assessments and remote/system testing activities for transitioned projects.</li>
+            <li>Produced dashboards and presentations for monthly working groups and operating committees.</li>
+          </ul>
+        </div>
+
+        <!-- ── Job 5: BNP Paribas ── -->
+        <div class="exp-card">
+          <div class="exp-header">
+            <h3 class="exp-role">PMO Lead & Transitions</h3>
+            <span class="exp-period">Jun 2014 – May 2015</span>
+          </div>
+          <p class="exp-company">Kelly Services — Deployed at BNP Paribas</p>
+          <ul class="exp-bullets">
+            <li>Maintained migration documentation and framework-compliant project migrations.</li>
+            <li>Supported annual budgeting and tracked resource effort via iPACT tool.</li>
+            <li>Managed SOPs, process maps, and knowledge base on SharePoint.</li>
+          </ul>
+        </div>
+
+        <!-- ── Job 6: eClerx ── -->
+        <div class="exp-card">
+          <div class="exp-header">
+            <h3 class="exp-role">PMO Analyst</h3>
+            <span class="exp-period">Jan 2013 – Jun 2014</span>
+          </div>
+          <p class="exp-company">eClerx</p>
+          <ul class="exp-bullets">
+            <li>Coordinated stakeholder ETAs and tracked project transition deliverables.</li>
+            <li>Drafted Project, Transition, BAU, and Training plans for the TMO.</li>
+            <li>Managed client billing, resource ramp-up tracking, and weekly reporting.</li>
+          </ul>
+        </div>
+
+      </div><!-- end .experience-list -->
+    </section>
+
+
+    <!-- ── SKILLS SECTION ─────────────────────────────────────── -->
+    <section class="section" id="skills">
+
+      <div class="section-header">
+        <span class="section-number">02</span>
+        <h2 class="section-title">Tools & Competencies</h2>
+      </div>
+
+      <!-- 
+        We have two sub-groups: Functional areas and Technical tools.
+        Each uses .skills-grid to lay out items in a responsive tile grid.
+      -->
+
+      <p style="font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold-dim); margin-bottom:1rem;">
+        Functional Areas
+      </p>
+      <!-- style="..." is inline CSS — applied directly to a single element -->
+
+      <div class="skills-grid" style="margin-bottom:2rem;">
+        <!-- 
+          Each .skill-item is one tile in the grid.
+          The grid-template-columns CSS auto-fills as many as can fit.
+        -->
+        <div class="skill-item">Program & Project Management</div>
+        <div class="skill-item">PMO Governance</div>
+        <div class="skill-item">Change Management</div>
+        <div class="skill-item">Migration Management</div>
+        <div class="skill-item">Workforce Strategy & Planning</div>
+        <div class="skill-item">Budgeting & Forecasting</div>
+        <div class="skill-item">Stakeholder Management</div>
+        <div class="skill-item">Risk & Compliance</div>
+        <div class="skill-item">Demand Planning</div>
+        <div class="skill-item">Process Improvement</div>
+        <div class="skill-item">Lean & Agile Methodologies</div>
+        <div class="skill-item">Executive Reporting</div>
+      </div>
+
+      <p style="font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold-dim); margin-bottom:1rem;">
+        Tools & Technology
+      </p>
+
+      <div class="skills-grid">
+        <div class="skill-item">JIRA</div>
+        <div class="skill-item">MS Project</div>
+        <div class="skill-item">Power BI</div>
+        <div class="skill-item">SharePoint</div>
+        <div class="skill-item">Confluence</div>
+        <div class="skill-item">Clarity PPM</div>
+        <div class="skill-item">Business Objects</div>
+        <div class="skill-item">MS Visio</div>
+        <div class="skill-item">Agile / Scrum</div>
+      </div>
+
+    </section>
+
+
+    <!-- ── ACCOMPLISHMENTS SECTION ────────────────────────────── -->
+    <section class="section" id="accomplishments">
+
+      <div class="section-header">
+        <span class="section-number">03</span>
+        <h2 class="section-title">Core Accomplishments</h2>
+      </div>
+
+      <div class="accomplishments-grid">
+        <!-- Each .acc-card is one highlighted achievement -->
+
+        <div class="acc-card">
+          <p>Implemented structural reforms for Market Regulations in Group Technology at UBS, ensuring compliance with governance frameworks and non-functional requirements.</p>
+        </div>
+
+        <div class="acc-card">
+          <p>Transitioned and implemented WFM initiatives across IB Ops & Tech with strong focus on resource forecasting, demand planning, and cost governance.</p>
+        </div>
+
+        <div class="acc-card">
+          <p>Delivered Business Process Re-engineering across 34+ projects — streamlining project budgets, resource allocation, and compliance reviews.</p>
+        </div>
+
+        <div class="acc-card">
+          <p>Built automated dashboards and executive reporting tools that reduced manual errors and delivered measurable time and cost savings for PMO functions.</p>
+        </div>
+
+        <div class="acc-card">
+          <p>Created SharePoint sites and digital trackers with embedded PMO reporting structures, improving governance communications and decision-making velocity.</p>
+        </div>
+
+        <div class="acc-card">
+          <p>Managed senior stakeholder relationships across 12+ years at global institutions — Omnicom, UBS, Morgan Stanley, Barclays, and BNP Paribas.</p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ── CERTIFICATIONS SECTION ─────────────────────────────── -->
+    <section class="section" id="certifications">
+
+      <div class="section-header">
+        <span class="section-number">04</span>
+        <h2 class="section-title">Certifications & Education</h2>
+      </div>
+
+      <div class="cert-list">
+
+        <div class="cert-item">
+          <div class="cert-icon">G</div>
+          <div>
+            <p class="cert-name">Google Project Management Specialization</p>
+            <p class="cert-date">May 2023</p>
+          </div>
+        </div>
+
+        <div class="cert-item">
+          <div class="cert-icon">G</div>
+          <div>
+            <p class="cert-name">Google — Agile Project Management</p>
+            <p class="cert-date">November 2022</p>
+          </div>
+        </div>
+
+        <div class="cert-item">
+          <div class="cert-icon">G</div>
+          <div>
+            <p class="cert-name">Google — Fundamentals of Digital Marketing</p>
+            <p class="cert-date">July 2023</p>
+          </div>
+        </div>
+
+        <div class="cert-item">
+          <div class="cert-icon">L</div>
+          <div>
+            <p class="cert-name">Cardiff — Lean Competency LCS Level 1A</p>
+            <p class="cert-date">July 2015</p>
+          </div>
+        </div>
+
+        <div class="cert-item">
+          <div class="cert-icon">B</div>
+          <div>
+            <p class="cert-name">Bachelor's in Computer Science</p>
+            <p class="cert-date">University of Mumbai</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+  <!-- End of <main> -->
+
+
+  <!-- ============================================================
+       FOOTER — Bottom of the page
+  ============================================================ -->
+  <footer>
+    <span class="footer-name">Chetan Lasurve</span>
+    <span class="footer-info">clasurve@gmail.com &nbsp;·&nbsp; +91 89762 26875 &nbsp;·&nbsp; Mumbai, India</span>
+    <!-- &nbsp; is an HTML entity for a non-breaking space — keeps things on one line -->
+  </footer>
+
+</body>
+<!-- End of <body> — everything visible must be above this line -->
+
+</html>
+<!-- End of <html> — the closing tag for the outermost wrapper -->
