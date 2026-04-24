@@ -1,121 +1,84 @@
-/* RESET */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  color: #111;
   background: #000;
-}
-
-/* HERO (Apple style) */
-.hero {
-  height: 100vh;
-  background: radial-gradient(circle at center, #1d1d1f, #000);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.hero-content h1 {
-  font-size: 72px;
-  color: #fff;
-}
-
-.subtitle {
-  font-size: 24px;
-  color: #aaa;
-}
-
-.tagline {
-  color: #ccc;
-  margin: 10px 0 20px;
-}
-
-.cta {
-  padding: 12px 28px;
-  background: #0071e3;
   color: white;
-  border-radius: 30px;
-  text-decoration: none;
-  transition: 0.3s;
 }
 
-.cta:hover {
-  background: #005bb5;
-  transform: scale(1.05);
+/* HERO VIDEO */
+.hero {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
 }
 
-/* PARALLAX SECTION */
-.parallax {
-  height: 80vh;
-  background-image: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085');
-  background-attachment: fixed;
-  background-size: cover;
-  background-position: center;
+.bg-video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  top: 40%;
+}
+
+.hero h1 {
+  font-size: 70px;
+}
+
+.hero p {
+  color: #ccc;
+}
+
+/* STICKY SECTION */
+.sticky-section {
+  height: 300vh;
+  position: relative;
+}
+
+.sticky-container {
+  position: sticky;
+  top: 0;
+  height: 100vh;
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: center;
 }
 
-.overlay {
-  background: rgba(0,0,0,0.6);
-  padding: 40px;
-  border-radius: 10px;
+.text-block {
+  position: absolute;
+  font-size: 50px;
+  opacity: 0;
+  transition: opacity 0.5s;
 }
 
-.overlay h2 {
-  color: #fff;
-  font-size: 40px;
-}
-
-/* CONTENT */
-.content {
+/* GLASS EFFECT */
+.glass-section {
   padding: 100px 20px;
   text-align: center;
-  background: #fff;
+  background: linear-gradient(#000, #111);
 }
 
-h2 {
-  font-size: 40px;
-}
-
-/* IMPACT */
-.impact {
-  padding: 100px 20px;
-  text-align: center;
-  background: #f5f5f7;
-}
-
-.grid {
+.glass-grid {
   display: flex;
   justify-content: center;
-  gap: 50px;
+  gap: 30px;
 }
 
-.grid h3 {
-  font-size: 50px;
+.glass-card {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  padding: 30px;
+  border-radius: 15px;
+  width: 200px;
 }
 
 /* CONTACT */
 .contact {
-  padding: 100px 20px;
+  padding: 100px;
   text-align: center;
-  background: #000;
-  color: white;
-}
-
-.contact a {
-  color: #2997ff;
-}
-
-/* FADE ANIMATION */
-.fade {
-  opacity: 0;
-  transform: translateY(60px);
-  transition: all 1s ease;
-}
-
-.fade.show {
-  opacity: 1;
-  transform: translateY(0);
 }
